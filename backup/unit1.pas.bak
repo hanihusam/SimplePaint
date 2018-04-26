@@ -1,7 +1,12 @@
 unit Unit1;
-                               {$mode objfpc}{$H+}{$MINSTACKSIZE 1024}{$MAXSTACKSIZE 99999999}
+                               {$mode objfpc}{$H+}{$MINSTACKSIZE 1024}{$MAXSTACKSIZE 999999999}
 interface
 uses
+  {$ifdef unix}
+  cthreads,
+  cmem, // the c memory manager is on some systems much faster for multi-threading
+  {$endif}
+  Interfaces, // this includes the LCL widgetset
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
   ExtCtrls, ComCtrls, StdCtrls, Buttons,
   EditBtn, ActnList, Menus,math,LCLType,contnrs,FPCanvas;
@@ -259,21 +264,27 @@ end;
 procedure TForm1.FloodFill(x,y:Integer);
 var
   current : TColor;
+  Scan : PRGBTriple;
 begin
    current := Kanvas.Pixels[x,y];
-   if (current = OldColor) and (current <> NewColor) then
-   begin
-     Kanvas.Pixels[x,y] := NewColor;
-     FloodFill(x,y-1);
-     FloodFill(x,y+1);
-     FloodFill(x-1,y);
-     FloodFill(x+1,y);
-   end;
+   Kanvas.AutoRedraw:=False;
+   Kanvas.Brush.Color:=NewColor;
+   Kanvas.FloodFill(x,y,OldColor,fsSurface);
+   //if (current = OldColor) and (current <> NewColor) then
+   //begin
+   //  Kanvas.Pixels[x,y] := NewColor;
+   //  FloodFill(x,y-1);
+   //  FloodFill(x,y+1);
+   //  FloodFill(x-1,y);
+   //  FloodFill(x+1,y);
+   //end;
+   Kanvas.AutoRedraw:=True;
 end;
 
 procedure TForm1.trapessiumBtnClick(Sender: TObject);
 begin
   ShapeSelected:='Trapessium';
+  style_lineBtn.Enabled:=True;
   TotalCoordinate:=4;
   SetLength(ShapeCoordinates,TotalCoordinate);
 
@@ -282,6 +293,7 @@ end;
 procedure TForm1.triangleBtnClick(Sender: TObject);
 begin
   ShapeSelected:='Triangle';
+  style_lineBtn.Enabled:=True;
   TotalCoordinate:=3;
   SetLength(ShapeCoordinates,TotalCoordinate);
 end;
@@ -374,6 +386,7 @@ procedure TForm1.Draw(S : array_coord);
 var
   i,j,xa,ya,xb,yb,c: Integer;
   temp : coord;
+  points : Array of TPoint;
 begin
   j:= TotalCoordinate;
   Kanvas.Pen.Style:=style_line;
@@ -382,11 +395,14 @@ begin
   Kanvas.Brush.Color:=FillColorButton.ButtonColor;
   if (j > 1) and (ShapeName <> 'Elipse') then
   begin
-      Kanvas.MoveTo(S[0].x,S[0].y);
+      //Kanvas.MoveTo(S[0].x,S[0].y);
+      SetLength(points,TotalCoordinate);
       for i:= j-1 downto 0 do
       begin
-        Kanvas.LineTo(S[i].x,S[i].y);
+        points[i].Create(S[i].x,S[i].y);
+        //Kanvas.LineTo(S[i].x,S[i].y);
       end;
+      Kanvas.Polygon(points);
   end
   else
   begin
@@ -818,6 +834,7 @@ end;
 procedure TForm1.lineBtnClick(Sender: TObject);
 begin
   ShapeSelected:='Line';
+  style_lineBtn.Enabled:=True;
   TotalCoordinate:=2;
   SetLength(ShapeCoordinates,TotalCoordinate);
 end;
@@ -916,6 +933,7 @@ end;
 procedure TForm1.rectangleBtnClick(Sender: TObject);
 begin
   ShapeSelected:='Rectangle';
+  style_lineBtn.Enabled:=True;
   TotalCoordinate:=4;
   SetLength(ShapeCoordinates,TotalCoordinate);
 end;
@@ -1018,6 +1036,7 @@ end;
 procedure TForm1.elipseBtnClick(Sender: TObject);
 begin
   ShapeSelected:='Elipse';
+  style_lineBtn.Enabled:=True;
   TotalCoordinate:=2;
   SetLength(ShapeCoordinates,TotalCoordinate);
 end;
@@ -1025,6 +1044,7 @@ end;
 procedure TForm1.DiamondBtnClick(Sender: TObject);
 begin
     ShapeSelected:='Diamond';
+    style_lineBtn.Enabled:=True;
      TotalCoordinate:=4;
      SetLength(ShapeCoordinates,TotalCoordinate);
 end;
@@ -1272,6 +1292,7 @@ end;
 procedure TForm1.Triangle2Click(Sender: TObject);
 begin
   ShapeSelected:='Triangle2';
+  style_lineBtn.Enabled:=True;
   TotalCoordinate:=3;
   SetLength(ShapeCoordinates,TotalCoordinate);
 end;
@@ -1300,6 +1321,7 @@ begin
   resizeBtn.Enabled:=False;
   Image1.Cursor:=crHandPoint;
   mode := 'fillBucket';
+  style_lineBtn.Enabled:=True;
   AreaDrawing.awal.x:=0;
   AreaDrawing.awal.y:=0;
   AreaDrawing.akhir.x:=0;
@@ -1311,6 +1333,7 @@ begin
   rotateBtn.Enabled:=False;
   resizeBtn.Enabled:=False;
   mode:='erase';
+  style_lineBtn.Enabled:=True;
   AreaDrawing.awal.x:=0;
   AreaDrawing.awal.y:=0;
   AreaDrawing.akhir.x:=0;
