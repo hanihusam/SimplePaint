@@ -1029,6 +1029,7 @@ end;
 procedure TForm1.jajargenjangBtnClick(Sender: TObject);
 begin
   ShapeSelected:='Jajargenjang';
+  style_lineBtn.Enabled:=True;
   TotalCoordinate:=4;
   SetLength(ShapeCoordinates,TotalCoordinate);
 end;

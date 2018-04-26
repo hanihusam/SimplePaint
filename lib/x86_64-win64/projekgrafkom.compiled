@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <Compiler Value="F:\lazarus\fpc\3.0.2\bin\x86_64-win64\fpc.exe" Date="1247518955"/>
-  <Params Value=" -MObjFPC -Scghi -O1 -g -gl -WG -l -vewnhibq &quot;-FiF:\projek grafkom\projek grafkom\lib\x86_64-win64&quot; -FuF:\lazarus\lcl\units\x86_64-win64\win32 -FuF:\lazarus\lcl\units\x86_64-win64 -FuF:\lazarus\components\lazutils\lib\x86_64-win64 -FuF:\lazarus\packager\units\x86_64-win64 &quot;-FuF:\projek grafkom\projek grafkom\&quot; &quot;-FUF:\projek grafkom\projek grafkom\lib\x86_64-win64\&quot; -dLCL -dLCLwin32 projekgrafkom.lpr"/>
+  <Params Value=" -MObjFPC -Scghi -O1 -g -gl -WG -l -vewnhibq &quot;-FiF:\projek grafkom\SimplePaint\lib\x86_64-win64&quot; -FuF:\lazarus\lcl\units\x86_64-win64\win32 -FuF:\lazarus\lcl\units\x86_64-win64 -FuF:\lazarus\components\lazutils\lib\x86_64-win64 -FuF:\lazarus\packager\units\x86_64-win64 &quot;-FuF:\projek grafkom\SimplePaint\&quot; &quot;-FUF:\projek grafkom\SimplePaint\lib\x86_64-win64\&quot; -dLCL -dLCLwin32 projekgrafkom.lpr"/>
 </CONFIG>
