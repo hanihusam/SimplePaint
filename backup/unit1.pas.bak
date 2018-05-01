@@ -151,7 +151,7 @@ type
     procedure FillColorBtnClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormKeyDown(Sender: TObject; var K: Word; Shift: TShiftState);
     procedure FormKeyPress(Sender: TObject; var Key: char);
     procedure gray50BtnClick(Sender: TObject);
     procedure greenBtnClick(Sender: TObject);
@@ -227,6 +227,7 @@ var
   StateNow : ^TBitmap;
   ShapeName : String;
   style_line: TFPPenStyle;
+  key : String;
 
 
 implementation
@@ -659,9 +660,20 @@ begin
   KeyPreview := True;
 end;
 
-procedure TForm1.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState
+procedure TForm1.FormKeyDown(Sender: TObject; var K: Word; Shift: TShiftState
   );
+var
+  i:String;
 begin
+  i := K.ToString;
+  if (key = 'ctr') and ((i = '90') or (i = '122')) and (undoBtn.Enabled) then undoBtnClick(Sender);
+  if (key = 'ctr') and ((i = '89') or (i = '121')) and (redoBtn.Enabled) then redoBtnClick(Sender);
+  if (key = 'ctr') and ((i = '83') or (i = '115')) and (redoBtn.Enabled) then redoBtnClick(Sender);
+  if ((mode = '') or (mode = 'dragged')) and (StrToInt(K.ToString) <= 40) and (StrToInt(K.ToString) >= 37) then
+  begin
+      StatusBar1.Panels.Items[2].Text:=K.ToString;
+  end;
+  if ssCtrl in Shift then key:='ctr' else key:='';
 
 end;
 
@@ -737,6 +749,8 @@ end;
 procedure TForm1.Image1MouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 begin
+  StatusBar1.Panels.Items[0].Text:= X.ToString;
+  StatusBar1.Panels.Items[1].Text:= Y.ToString;
   if (ShapeSelected <> '') and (BeingDrawShape = True) then
   begin
     AreaDrawing.akhir.x := X;
@@ -907,15 +921,18 @@ var
   rect : TRect;
 begin
   if OpenDialog1.Execute then
-  filename := OpenDialog1.FileName;
-  rect := TRect.Create(0,0,Kanvas.Width,Kanvas.Height);
-  //bitmap := TBitmap.Create;
-  image := TPicture.Create;
-  //bitmap.Canvas.Clear;
-  //bitmap.LoadFromFile(filename);
-  image.LoadFromFile(filename);
-  Kanvas.Draw(0,0,image.Graphic);
-  RecordCanvas();
+  begin
+      filename := OpenDialog1.FileName;
+      rect := TRect.Create(0,0,Kanvas.Width,Kanvas.Height);
+      //bitmap := TBitmap.Create;
+      image := TPicture.Create;
+      //bitmap.Canvas.Clear;
+      //bitmap.LoadFromFile(filename);
+      image.PNG.LoadFromFile(filename);
+      Kanvas.Draw(0,0,image.Graphic);
+      RecordCanvas();
+  end;
+
 end;
 
 procedure TForm1.orangeBtnClick(Sender: TObject);
@@ -974,17 +991,17 @@ end;
 
 procedure TForm1.saveBtnClick(Sender: TObject);
 var
-  bitmap : TBitmap;
+  bitmap : TPicture;
   rect : TRect;
 begin
   if SaveDialog1.Execute then
   filename:=SaveDialog1.FileName;
-  bitmap := TBitmap.Create;
-  bitmap.Canvas.Clear;
-  bitmap.SetSize(Kanvas.Width,Kanvas.Height);
+  bitmap := TPicture.Create;
+  bitmap.Bitmap.Canvas.Clear;
+  bitmap.Bitmap.SetSize(Kanvas.Width,Kanvas.Height);
   rect := TRect.Create(0,0,Kanvas.Width,Kanvas.Height);
-  bitmap.Canvas.CopyRect(rect,Kanvas,rect);
-  bitmap.SaveToFile(filename);
+  bitmap.Bitmap.Canvas.CopyRect(rect,Kanvas,rect);
+  bitmap.PNG.SaveToFile(filename + '.png');
 end;
 
 
