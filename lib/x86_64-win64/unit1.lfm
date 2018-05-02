@@ -7388,37 +7388,37 @@ object Form1: TForm1
   object rotateMenu: TPopupMenu
     left = 1112
     top = 56
-    object MenuItem1: TMenuItem
+    object RotLef90: TMenuItem
       Caption = 'Rotate Left 90'
-      OnClick = MenuItem1Click
+      OnClick = RotLef90Click
     end
-    object MenuItem3: TMenuItem
+    object RotLef45: TMenuItem
       Caption = 'Rotate Left 45'
-      OnClick = MenuItem3Click
+      OnClick = RotLef45Click
     end
-    object MenuItem6: TMenuItem
+    object RotLef30: TMenuItem
       Caption = 'Rotate Left 30'
-      OnClick = MenuItem6Click
+      OnClick = RotLef30Click
     end
-    object MenuItem2: TMenuItem
+    object RotRig90: TMenuItem
       Caption = 'Rotate Right 90'
-      OnClick = MenuItem2Click
+      OnClick = RotRig90Click
     end
-    object MenuItem7: TMenuItem
+    object RotRig45: TMenuItem
       Caption = 'Rotate Right 45'
-      OnClick = MenuItem7Click
+      OnClick = RotRig45Click
     end
-    object MenuItem5: TMenuItem
+    object RotRig30: TMenuItem
       Caption = 'Rotate Right 30'
-      OnClick = MenuItem5Click
+      OnClick = RotRig30Click
     end
-    object MenuItem4: TMenuItem
+    object FlipHor: TMenuItem
       Caption = 'Flip Horizontal'
-      OnClick = MenuItem4Click
+      OnClick = FlipHorClick
     end
-    object MenuItem8: TMenuItem
+    object FlipVer: TMenuItem
       Caption = 'Flip Vertical'
-      OnClick = MenuItem8Click
+      OnClick = FlipVerClick
     end
   end
   object SaveDialog1: TSaveDialog

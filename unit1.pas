@@ -29,12 +29,12 @@ type
     SkewVertical: TMenuItem;
     SkewHorizontal: TMenuItem;
     Perkecil: TMenuItem;
-    MenuItem3: TMenuItem;
-    MenuItem4: TMenuItem;
-    MenuItem5: TMenuItem;
-    MenuItem6: TMenuItem;
-    MenuItem7: TMenuItem;
-    MenuItem8: TMenuItem;
+    RotLef45: TMenuItem;
+    FlipHor: TMenuItem;
+    RotRig30: TMenuItem;
+    RotLef30: TMenuItem;
+    RotRig45: TMenuItem;
+    FlipVer: TMenuItem;
     Perbesar: TMenuItem;
     menuResize: TPopupMenu;
     trapessiumBtn: TBitBtn;
@@ -58,8 +58,8 @@ type
     Label8: TLabel;
     Label9: TLabel;
     lineBtn: TBitBtn;
-    MenuItem1: TMenuItem;
-    MenuItem2: TMenuItem;
+    RotLef90: TMenuItem;
+    RotRig90: TMenuItem;
     newBtn: TSpeedButton;
     openBtn: TSpeedButton;
     OpenDialog1: TOpenDialog;
@@ -116,12 +116,12 @@ type
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
     procedure PerkecilClick(Sender: TObject);
-    procedure MenuItem3Click(Sender: TObject);
-    procedure MenuItem4Click(Sender: TObject);
-    procedure MenuItem5Click(Sender: TObject);
-    procedure MenuItem6Click(Sender: TObject);
-    procedure MenuItem7Click(Sender: TObject);
-    procedure MenuItem8Click(Sender: TObject);
+    procedure RotLef45Click(Sender: TObject);
+    procedure FlipHorClick(Sender: TObject);
+    procedure RotRig30Click(Sender: TObject);
+    procedure RotLef30Click(Sender: TObject);
+    procedure RotRig45Click(Sender: TObject);
+    procedure FlipVerClick(Sender: TObject);
     procedure PerbesarClick(Sender: TObject);
     procedure rectangleBtnDragDrop(Sender, Source: TObject; X, Y: Integer);
     procedure resizeBtnClick(Sender: TObject);
@@ -169,8 +169,8 @@ type
     procedure lineBtnClick(Sender: TObject);
     procedure LineColorBtnChange(Sender: TObject);
     procedure LineColorBtnClick(Sender: TObject);
-    procedure MenuItem1Click(Sender: TObject);
-    procedure MenuItem2Click(Sender: TObject);
+    procedure RotLef90Click(Sender: TObject);
+    procedure RotRig90Click(Sender: TObject);
     procedure newBtnClick(Sender: TObject);
     procedure openBtnClick(Sender: TObject);
     procedure orangeBtnClick(Sender: TObject);
@@ -668,7 +668,7 @@ begin
   i := K.ToString;
   if (key = 'ctr') and ((i = '90') or (i = '122')) and (undoBtn.Enabled) then undoBtnClick(Sender);
   if (key = 'ctr') and ((i = '89') or (i = '121')) and (redoBtn.Enabled) then redoBtnClick(Sender);
-  if (key = 'ctr') and ((i = '83') or (i = '115')) and (redoBtn.Enabled) then redoBtnClick(Sender);
+  if (key = 'ctr') and ((i = '83') or (i = '115')) then saveBtnClick(Sender);
   if ((mode = '') or (mode = 'dragged')) and (StrToInt(K.ToString) <= 40) and (StrToInt(K.ToString) >= 37) then
   begin
       StatusBar1.Panels.Items[2].Text:=K.ToString;
@@ -768,6 +768,7 @@ begin
     end;
     RefreshCanvas();
     Draw(ShapeCoordinates);
+
     DrawFill(AreaDrawing);
     rotateBtn.Enabled:=True;
     resizeBtn.Enabled:=True;
@@ -869,16 +870,17 @@ begin
    if FillColorBtn.Checked then FillColorBtn.Checked:=False;
 end;
 
-procedure TForm1.MenuItem1Click(Sender: TObject);
+procedure TForm1.RotLef90Click(Sender: TObject);
 begin
   Rotation(-90);
   RotationDrawingArea(-90);
+
   RefreshCanvas(2);
   Draw(ShapeCoordinates);
   DrawFill(AreaDrawing);
 end;
 
-procedure TForm1.MenuItem2Click(Sender: TObject);
+procedure TForm1.RotRig90Click(Sender: TObject);
 begin
   Rotation(90);
   RotationDrawingArea(90);
@@ -921,6 +923,7 @@ var
   image : TPicture;
   rect : TRect;
 begin
+  OpenDialog1.Filter:='*.png|*.PNG';
   if OpenDialog1.Execute then
   begin
       filename := OpenDialog1.FileName;
@@ -995,14 +998,17 @@ var
   bitmap : TPicture;
   rect : TRect;
 begin
+  SaveDialog1.Filter:='*.png|*.PNG';
   if SaveDialog1.Execute then
-  filename:=SaveDialog1.FileName;
-  bitmap := TPicture.Create;
-  bitmap.Bitmap.Canvas.Clear;
-  bitmap.Bitmap.SetSize(Kanvas.Width,Kanvas.Height);
-  rect := TRect.Create(0,0,Kanvas.Width,Kanvas.Height);
-  bitmap.Bitmap.Canvas.CopyRect(rect,Kanvas,rect);
-  bitmap.PNG.SaveToFile(filename + '.png');
+  begin
+    filename:=SaveDialog1.FileName;
+    bitmap := TPicture.Create;
+    bitmap.Bitmap.Canvas.Clear;
+    bitmap.Bitmap.SetSize(Kanvas.Width,Kanvas.Height);
+    rect := TRect.Create(0,0,Kanvas.Width,Kanvas.Height);
+    bitmap.Bitmap.Canvas.CopyRect(rect,Kanvas,rect);
+    bitmap.PNG.SaveToFile(filename + '.png');
+  end;
 end;
 
 
@@ -1143,7 +1149,7 @@ begin
     end;
 end;
 
-procedure TForm1.MenuItem3Click(Sender: TObject);
+procedure TForm1.RotLef45Click(Sender: TObject);
 begin
   Rotation(-45);
   RotationDrawingArea(-45);
@@ -1152,7 +1158,7 @@ begin
   DrawFill(AreaDrawing);
 end;
 
-procedure TForm1.MenuItem4Click(Sender: TObject);
+procedure TForm1.FlipHorClick(Sender: TObject);
 var
   i : Integer;
 begin
@@ -1166,7 +1172,7 @@ begin
      DrawFill(AreaDrawing);
 end;
 
-procedure TForm1.MenuItem5Click(Sender: TObject);
+procedure TForm1.RotRig30Click(Sender: TObject);
 begin
   Rotation(30);
   RotationDrawingArea(30);
@@ -1175,7 +1181,7 @@ begin
   DrawFill(AreaDrawing);
 end;
 
-procedure TForm1.MenuItem6Click(Sender: TObject);
+procedure TForm1.RotLef30Click(Sender: TObject);
 begin
   Rotation(-30);
   RotationDrawingArea(-30);
@@ -1184,7 +1190,7 @@ begin
   DrawFill(AreaDrawing);
 end;
 
-procedure TForm1.MenuItem7Click(Sender: TObject);
+procedure TForm1.RotRig45Click(Sender: TObject);
 begin
   Rotation(45);
   RotationDrawingArea(45);
@@ -1193,7 +1199,7 @@ begin
   DrawFill(AreaDrawing);
 end;
 
-procedure TForm1.MenuItem8Click(Sender: TObject);
+procedure TForm1.FlipVerClick(Sender: TObject);
 var
   i : Integer;
 begin
